@@ -1,0 +1,77 @@
+.c-bar-chart {
+    height: 300px;
+}
+
+.c-star {
+    color: orange;
+}
+
+.c-star--empty {
+    color: gray;
+    cursor: pointer;
+}
+
+.c-box__footer {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top: 1px solid #f4f4f4;
+    padding: 50px 10px 20px 10px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.c-box__body__header {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.c-box-add {
+    display: block;
+    min-height: 90px;
+    background: #fff;
+    width: 90px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin: 0px auto 15px auto;
+}
+
+.c-plus {
+    color:rgb(120, 120, 120);
+}
+
+.c-info-box__btns {
+    margin-top: 10px
+}
+
+.c-info-box__btns__left {
+    float: right;
+}
+
+.c-info-box__btns__right {
+    float: right;
+    margin-right: 14px;
+}
+
+.c-info-box__btns__one {
+    float: right;
+}
+
+.c-fundacion-title {
+    float: left;
+    margin-left: 15px;
+    width: 100px;
+}
+
+.c-mapa {
+    width: 100%;
+    height:700px;
+    background:yellow;
+    border-top: 3px solid #d2d6de;
+}
+
+.c-filtro-adoptar {
+    padding: 10px;
+    color: white;
+}

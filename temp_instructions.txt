@@ -1,0 +1,19 @@
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Permission
+from naturalUser.models import NaturalUser
+from municipality.models import MunicipalityUser
+
+content_type = ContentType.objects.get_for_model(NaturalUser)
+permission = Permission.objects.create(
+    codename='natural_user_access',
+    name='Can Publish Posts',
+    content_type=content_type,
+)
+
+
+content_type = ContentType.objects.get_for_model(MunicipalityUser)
+permission = Permission.objects.create(
+    codename='municipality_user_access',
+    name='Can Publish Posts',
+    content_type=content_type,
+)
