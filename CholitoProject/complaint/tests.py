@@ -37,7 +37,8 @@ class ComplaintsTests(TestCase):
         AnimalType.objects.create(name='Perro')
 
     def test_complaint_on_correct_Municipality(self):
-        complaint_1_data = {
+        user = MunicipalityUser.objects.get(user=(User.objects.get(username="dummy@gmail.com")).id)
+        complaint_data = {
             'case':3,
             'animal_type':AnimalType.objects.get(name='Conejo').id,
             'gender':2,
@@ -47,8 +48,37 @@ class ComplaintsTests(TestCase):
             'lat':-33.5903,
             'lng':-70.5957,
             'description':'Es hermosa',
-            'municipality':Municipality.objects.get(name="DummyBunny").id
+            'municipality':user.municipality.id
         }
-        form = ComplaintForm(data=complaint_1_data)
+        form = ComplaintForm(data=complaint_data)
         self.assertTrue(form.is_valid())
-        #hola?
+        complaint = form.save(commit=False)
+        complaint.status = 1
+        complaint.save()
+        ComplaintImage.objects.create(complaint=complaint, image=None)
+        complaints = Complaint.objects.filter(municipality=user.municipality)
+        self.assertEqual(complaints.count(), 1)
+        complaint_data["description"] = 'Negro'
+        form = ComplaintForm(data=complaint_data)
+        self.assertTrue(form.is_valid())
+        complaint = form.save(commit=False)
+        complaint.status = 1
+        complaint.save()
+        ComplaintImage.objects.create(complaint=complaint, image=None)
+        complaints = Complaint.objects.filter(municipality=user.municipality)
+        self.assertEqual(complaints.count(), 2)
+        user = MunicipalityUser.objects.get(user=(User.objects.get(username="dummy2@gmail.com")).id)
+        complaints = Complaint.objects.filter(municipality=user.municipality)
+        self.assertEqual(complaints.count(), 0)
+        complaint_data['municipality'] = user.municipality.id
+        form = ComplaintForm(data=complaint_data)
+        self.assertTrue(form.is_valid())
+        complaint = form.save(commit=False)
+        complaint.status = 1
+        complaint.save()
+        ComplaintImage.objects.create(complaint=complaint, image=None)
+        complaints = Complaint.objects.filter(municipality=user.municipality)
+        self.assertEqual(complaints.count(), 1)
+        user = MunicipalityUser.objects.get(user=(User.objects.get(username="dummy@gmail.com")).id)
+        complaints = Complaint.objects.filter(municipality=user.municipality)
+        self.assertEqual(complaints.count(), 2)
