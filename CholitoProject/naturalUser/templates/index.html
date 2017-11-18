@@ -23,7 +23,10 @@
            center: {lat: -34.397, lng: 150.644},
            zoom: 15
         });
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        var user_icon = iconBase + 'library_maps.png'
         var marker = new google.maps.Marker({
+          icon: user_icon,
           map: map
         });
         if (navigator.geolocation) {
@@ -62,7 +65,10 @@
            center: {lat: -34.397, lng: 150.644},
            zoom: 15
         });
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        var user_icon = iconBase + 'library_maps.png'
         var marker = new google.maps.Marker({
+          icon: user_icon,
           map: map
         });
         if (navigator.geolocation) {
