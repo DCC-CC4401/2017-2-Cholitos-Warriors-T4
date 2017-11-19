@@ -48,7 +48,7 @@
                     map: map
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
-                    content: "{{ ong.name }} <br> {{ ong.directions }}"
+                    content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(mark, 'click', function() {
                 //window.location.href = this.url;
@@ -104,7 +104,7 @@
                     map: map
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
-                    content: "{{ ong.name }} <br> {{ ong.directions }}"
+                    content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(mark, 'click', function() {
                 //window.location.href = this.url;
