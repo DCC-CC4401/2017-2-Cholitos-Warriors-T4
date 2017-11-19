@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 from municipality.models import Municipality
 
@@ -49,9 +50,10 @@ class Complaint(models.Model):
     wounded = models.BooleanField(choices=WOUND_OPTIONS)
     color = models.TextField(max_length=50)
     municipality = models.ForeignKey(Municipality)
+    date = models.DateTimeField(default=timezone.now)#auto_now_add=True)
 
     def __str__(self):
-        return "Complaint #" + str(self.pk)
+        return "Complaint #" + str(self.pk) + " (" + str(self.municipality.name) + ")"
 
 
 class ComplaintImage(models.Model):
