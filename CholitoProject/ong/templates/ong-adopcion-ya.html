@@ -29,13 +29,13 @@
                                 <!-- The user image in the navbar-->
                                 <img src="dist/img/ong-edra.png" class="user-image" alt="User Image">
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                <span class="hidden-xs">F. EDRA</span>
+                                <span class="hidden-xs">F. {{ ong.name }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
                                     <img src="dist/img/ong-edra.png" class="img-circle" alt="User Image">
-                                    <p>Fundación EDRA</p>
+                                    <p>Fundación {{ ong.name }}</p>
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
@@ -65,7 +65,7 @@
                         <img src="dist/img/ong-edra.png" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Fundación EDRA</p>
+                        <p>Fundación {{ ong.name }}</p>
                         <a href="#">
                             <i class="fa fa-star c-star"></i>
                             182
@@ -119,18 +119,23 @@
             <!-- Main content -->
             <section class="content container-fluid">
                 <div class="row">
+                    {% for animal in animals %}
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                         <div class="info-box">
                             <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg');">
                             </span>
                             <div class="info-box-content">
                                 <span class="info-box-number">
-                                    Roca
+                                    {{ animal.name }}
                                 </span>
-                                <span class="info-box-text">Perro | Macho</span>
+                                {% if animal.gender == 1 %}
+                                <span class="info-box-text">{{ animal.animal_type.name }} | Macho</span>
+                                {% else %}
+                                <span class="info-box-text">{{ animal.animal_type.name }} | Hembra</span>
+                                {% endif %}
                                 <div class="c-info-box__btns">
                                     <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
+                                        <a href="{% url 'see-animal' animal.id %}" type="button" class="btn btn-xs btn-info">
                                             <i class="fa fa-eye"></i>
                                             &nbsp; Ver
                                         </a>
@@ -139,168 +144,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg') right bottom;">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg');">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg');">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg') right bottom;">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg');">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg') right bottom;">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg');">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg') right bottom;">
-                            </span>
-                            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Roca
-                                </span>
-                                <span class="info-box-text">Perro | Macho</span>
-                                <div class="c-info-box__btns">
-                                    <div class="c-info-box__btns__one">
-                                        <a href="#" type="button" class="btn btn-xs btn-info">
-                                            <i class="fa fa-eye"></i>
-                                            &nbsp; Ver
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    {% endfor %}
                 </div>
                 <!-- /.row -->
 
