@@ -12,15 +12,15 @@ class IndexView(PermissionRequiredMixin, LoginRequiredMixin, View):
     context = {}
 
     def getComplaintStats(self, complaints):
-        stats_complaint = {}
+        stats_complaint = {} #cantidad de denuncias por tipo
         status_parser = dict(Complaint().COMPLAINT_STATUS)
 
         for key, value in status_parser.items():
-            stats_complaint[value] = 0
+            stats_complaint[value] = 0 #setear todos los contadores en 0
 
         for complaint in list(complaints):
             temp_status = status_parser.get(complaint.status)
-            stats_complaint[temp_status] += 1
+            stats_complaint[temp_status] += 1 #sumar dependiendo del tipo
 
         return stats_complaint
 
@@ -40,9 +40,31 @@ class StatisticsView(PermissionRequiredMixin, LoginRequiredMixin, View):
     template_name = 'muni_statistics.html'
     context = {}
 
+    def getComplaintTypeStats(self, complaints):
+        stats_complaint = {} #cantidad de denuncias por tipo
+        status_parser = dict(Complaint().COMPLAINT_OPTIONS)
+
+        total = 0
+
+        for key, value in status_parser.items():
+            stats_complaint[value] = 0 #setear todos los contadores en 0
+
+        for complaint in list(complaints):
+            temp_status = status_parser.get(complaint.case)
+            total += 1
+            stats_complaint[temp_status] += 1 #sumar dependiendo del tipo
+
+        return total, stats_complaint
+
     def get(self, request, **kwargs):
         user = get_user_index(request.user)
+
+        complaints = Complaint.objects.filter(
+            municipality=user.municipality)
+
+        self.context['complaints'] = complaints
         self.context['c_user'] = user
+        self.context['total'], self.context['stats'] = self.getComplaintTypeStats(complaints)
         return render(request, self.template_name, context=self.context)
 
 
