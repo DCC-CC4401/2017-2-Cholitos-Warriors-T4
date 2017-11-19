@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'naturalUser',
     'ong',
     'debug_toolbar',
+    'geoposition',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 LOGIN_URL = '/login/'
 
 INTERNAL_IPS = ['127.0.0.1', ]
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyBqlGCTE4K869n98LQI6KEvs4maR103lwg'
