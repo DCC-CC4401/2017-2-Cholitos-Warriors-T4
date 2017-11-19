@@ -1,0 +1,86 @@
+{% extends "Municipality/municipality-standard.html" %}
+{% block title %}Estatisticas{% endblock %}
+
+{% block content-header %}Estadisticas de Denuncias{% endblock %}
+
+{% block content %}
+
+    <script src="http://d3plus.org/js/d3.js"></script>
+    <script src="http://d3plus.org/js/d3plus.js"></script>
+
+    <h3>Estado de Denuncias</h3>
+    <div id="viz"></div>
+    <h3>Tipo de Denuncias</h3>
+    <div id="viz2"></div>
+
+    <script>
+        var data = [
+            {% for key, value in stats.items %}
+                {"name": "{{key}}", "denuncias":{{value}} },
+            {% endfor %}
+
+            /*{"Denuncias": 150, "name": "Perros",
+                "Reportadas": 50, "Consolidadas": 20,
+                "Verificadas": 130, "Cerradas": 10, "Desechadas": 20},
+            {"Denuncias": 110, "name": "Gatos",
+                "Reportadas": 40, "Consolidadas": 40,
+                "Verificadas": 100, "Cerradas": 35, "Desechadas": 5},
+            {"Denuncias": 60, "name": "Aves",
+                "Reportadas": 20, "Consolidadas": 2,
+                "Verificadas": 45, "Cerradas": 15, "Desechadas": 10},
+            {"Denuncias": 20, "name": "Caballos",
+                "Reportadas": 5, "Consolidadas": 1,
+                "Verificadas": 15, "Cerradas": 4, "Desechadas": 2},
+            {"Denuncias": 40, "name": "Otros",
+                "Reportadas": 10, "Consolidadas": 10,
+                "Verificadas": 40, "Cerradas": 5, "Desechadas": 4}
+            */
+        ];
+        d3plus.viz()
+            .container("#viz")
+            .data(data)
+            .type("pie")
+            .id("name")
+            .size("denuncias")
+            /*.ui([
+                {
+                    "method": "size",
+                    "value": ["Denuncias", "Reportadas", "Consolidadas", "Verificadas", "Cerradas"]
+                }
+
+            ])*/
+            .draw()
+    </script>
+
+    <script>
+        var data = [
+            {% for key, value in stats.items %}
+                {"Mes": "{{key}}", "name":{{value}} },
+            {% endfor %}
+            {"Animal": "Perros", "name": "Reportadas", "Cantidad": 100},
+            {"Animal": "Perros", "name": "Consolidadas", "Cantidad": 70},
+            {"Animal": "Perros", "name": "Verificadas", "Cantidad": 60},
+            {"Animal": "Perros", "name": "Cerradas", "Cantidad": 30},
+            {"Animal": "Gatos", "name": "Reportadas", "Cantidad": 80},
+            {"Animal": "Gatos", "name": "Consolidadas", "Cantidad": 50},
+            {"Animal": "Gatos", "name": "Verificadas", "Cantidad": 60},
+            {"Animal": "Gatos", "name": "Cerradas", "Cantidad": 40},
+            {"Animal": "Aves", "name": "Reportadas", "Cantidad": 40},
+            {"Animal": "Aves", "name": "Consolidadas", "Cantidad": 10},
+            {"Animal": "Aves", "name": "Verificadas", "Cantidad": 20},
+            {"Animal": "Aves", "name": "Cerradas", "Cantidad": 2},
+            {"Animal": "Otros", "name": "Reportadas", "Cantidad": 40},
+            {"Animal": "Otros", "name": "Consolidadas", "Cantidad": 15},
+            {"Animal": "Otros", "name": "Verificadas", "Cantidad": 20},
+            {"Animal": "Otros", "name": "Cerradas", "Cantidad": 10}
+        ];
+        var visualization = d3plus.viz()
+            .container("#viz2")
+            .data(data)
+            .type("bar")
+            .id("name")
+            .x("Animal")
+            .y("Cantidad")
+            .draw()
+    </script>
+{% endblock %}
