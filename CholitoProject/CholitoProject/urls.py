@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^logout/', LogOutView.as_view(), name='logout'),
     url(r'^municipality/', include('municipality.urls')),
     url(r'^animal/', include('animals.urls')),
+    url(r'^ong/', include('ong.urls')),
     url(r'', include('naturalUser.urls')),
 ]
 
