@@ -10,6 +10,9 @@ class ONG(models.Model):
     directions = models.TextField(max_length=200, null=True)
     logo = models.ImageField(upload_to='ong/logos')
 
+    def __str__(self):
+        return self.name
+
 
 class ONGUser(User):
     ong = models.ForeignKey('ONG')
