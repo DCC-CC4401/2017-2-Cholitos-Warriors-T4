@@ -15,9 +15,13 @@ class ONGforNaturalUser(View):
 
     def get(self, request, pk, **kwargs):
         user = get_user_index(request.user)
-        self.context['user'] = user
+        self.context['user'] = request.user
         ong = get_object_or_404(ONG, pk=pk)
         self.context['ong'] = ong
-        self.context['animals'] = Animal.objects.filter(ong = ong.id)
+        animals = Animal.objects.filter(ong = ong.id)
+        animal_images = []
+        for animal in animals:
+            animal_images.append(AnimalImage.objects.filter(animal=animal.id)[0])
+        self.context['animals'] = animal_images
 
         return render(request, self.template, context=self.context)

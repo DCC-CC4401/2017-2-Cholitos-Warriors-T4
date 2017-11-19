@@ -29,13 +29,13 @@
                                 <!-- The user image in the navbar-->
                                 <img src="dist/img/ong-edra.png" class="user-image" alt="User Image">
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                                <span class="hidden-xs">F. {{ ong.name }}</span>
+                                <span class="hidden-xs">{{ user.first_name }} {{ user.last_name }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
                                     <img src="dist/img/ong-edra.png" class="img-circle" alt="User Image">
-                                    <p>Fundación {{ ong.name }}</p>
+                                    <p>{{ user.first_name }} {{ user.last_name }}</p>
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
@@ -85,7 +85,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li>
-                                <a href="ong-adopcion-en.html">
+                                <a href="/ong/{{ ong.id }}">
                                     <i class="fa fa-circle-o"></i>
                                     Buscan hogar
                                 </a>
@@ -121,21 +121,23 @@
                 <div class="row">
                     {% for animal in animals %}
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="info-box">
-                            <span class="info-box-icon" style="background:url('dist/img/perro2-100x100.jpg');">
+                        <div class="info-box" style="text-align:center;">
+                            <div class="myDiv" style="display:inline-block;">
+                                <img src={{ animal.image.url }} width="90" height="90">
                             </span>
-                            <div class="info-box-content">
+                            </div>
+                            <div class="info-box-content" style="display:inline-block;">
                                 <span class="info-box-number">
-                                    {{ animal.name }}
+                                    {{ animal.animal.name }}
                                 </span>
-                                {% if animal.gender == 1 %}
-                                <span class="info-box-text">{{ animal.animal_type.name }} | Macho</span>
+                                {% if animal.animal.gender == 1 %}
+                                <span class="info-box-text">{{ animal.animal.animal_type.name }} | Macho</span>
                                 {% else %}
-                                <span class="info-box-text">{{ animal.animal_type.name }} | Hembra</span>
+                                <span class="info-box-text">{{ animal.animal.animal_type.name }} | Hembra</span>
                                 {% endif %}
                                 <div class="c-info-box__btns">
                                     <div class="c-info-box__btns__one">
-                                        <a href="{% url 'see-animal' animal.id %}" type="button" class="btn btn-xs btn-info">
+                                        <a href="{% url 'see-animal' animal.animal.id %}" type="button" class="btn btn-xs btn-info">
                                             <i class="fa fa-eye"></i>
                                             &nbsp; Ver
                                         </a>
@@ -247,31 +249,40 @@
     <!-- ./wrapper -->
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Perfil</h4>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="/user/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Nombre</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" value="Fundación EDRA">
+                            <label for="user_first_name">Nombre</label>
+                            <input class="form-control" id="user_first_name"
+                                   value="{{ user.first_name }}" name="f_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="user_last_name">Apellido</label>
+                            <input class="form-control" id="user_last_name"
+                                   value="{{ user.last_name }}" name="l_name">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputFile">Imagen de perfil</label>
                             <br>
-                            <img src="dist/img/ong-edra.png" class="user-image" alt="User Image" width="150">
+                            <img src="{{ user.avatar.url }}" class="user-image" alt="User Image" width="150">
                             <br><br>
-                            <input type="file" id="exampleInputFile">
+                            <input type="file" id="exampleInputFile" name="avatar">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
+
+                        <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Actualizar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+                    </form>
                 </div>
             </div>
         </div>
