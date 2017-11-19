@@ -16,7 +16,5 @@ class ONGforNaturalUser(View):
         self.context['user'] = user
         ong = get_object_or_404(ONG, pk=pk)
         self.context['ong'] = ong
-        is_favorite = FavoriteONGs.objects.filter(ong = ong, user= user).exists()
-        self.context['is_favorite']= is_favorite
 
         return render(request, self.template, context=self.context)
