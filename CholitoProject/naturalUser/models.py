@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Permission
 from django.db import models
 from django.shortcuts import render
-
+from ong.models import ONG
 
 class NaturalUser(models.Model):
     user = models.OneToOneField(User)
@@ -19,3 +19,7 @@ class NaturalUser(models.Model):
 
     def get_index(self, request, context=None):
         return render(request, 'index.html', context=context)
+
+class FavoriteONGs(models.Model):
+    ongs = models.ForeignKey(ONG)
+    user = models.ForeignKey(NaturalUser)
