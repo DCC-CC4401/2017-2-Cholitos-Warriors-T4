@@ -42,7 +42,8 @@
             .type("pie")
             .id("name")
             .size("denuncias")
-            /*.ui([
+            /*
+            .ui([
                 {
                     "method": "size",
                     "value": ["Denuncias", "Reportadas", "Consolidadas", "Verificadas", "Cerradas"]
@@ -53,10 +54,14 @@
     </script>
 
     <script>
+
         var data = [
-            {% for key, value in stats.items %}
-                {"Mes": "{{key}}", "name":{{value}} },
+            {% for month, month_values in stats2.items %}
+                {% for key2, value2 in month_values.items %}
+                    {"mes": "{{month}}", "name":"{{key2}}", "cantidad": {{ value2 }} },
+                {% endfor %}
             {% endfor %}
+            /*
             {"Animal": "Perros", "name": "Reportadas", "Cantidad": 100},
             {"Animal": "Perros", "name": "Consolidadas", "Cantidad": 70},
             {"Animal": "Perros", "name": "Verificadas", "Cantidad": 60},
@@ -72,15 +77,15 @@
             {"Animal": "Otros", "name": "Reportadas", "Cantidad": 40},
             {"Animal": "Otros", "name": "Consolidadas", "Cantidad": 15},
             {"Animal": "Otros", "name": "Verificadas", "Cantidad": 20},
-            {"Animal": "Otros", "name": "Cerradas", "Cantidad": 10}
+            {"Animal": "Otros", "name": "Cerradas", "Cantidad": 10}*/
         ];
         var visualization = d3plus.viz()
             .container("#viz2")
             .data(data)
             .type("bar")
-            .id("name")
-            .x("Animal")
-            .y("Cantidad")
+            .id(["name", "mes"])
+            .x("mes")
+            .y("cantidad")
             .draw()
     </script>
 {% endblock %}

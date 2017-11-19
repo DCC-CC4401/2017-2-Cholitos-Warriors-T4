@@ -59,3 +59,6 @@ class Complaint(models.Model):
 class ComplaintImage(models.Model):
     image = models.ImageField(upload_to='complaints/')
     complaint = models.ForeignKey('Complaint', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Complaint Image from #" + str(self.complaint.pk)
