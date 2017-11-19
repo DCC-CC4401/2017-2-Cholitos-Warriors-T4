@@ -47,6 +47,13 @@
                     position: loc,
                     map: map
                 });
+                mark['infowindow'] = new google.maps.InfoWindow({
+                    content: "{{ ong.name }} <br> {{ ong.directions }}"
+                });
+                google.maps.event.addListener(mark, 'click', function() {
+                //window.location.href = this.url;
+                 this['infowindow'].open(map, this);
+            });
             {% endfor %}
         } else {
           // Browser doesn't support Geolocation
@@ -96,6 +103,13 @@
                     position: loc,
                     map: map
                 });
+                mark['infowindow'] = new google.maps.InfoWindow({
+                    content: "{{ ong.name }} <br> {{ ong.directions }}"
+                });
+                google.maps.event.addListener(mark, 'click', function() {
+                //window.location.href = this.url;
+                 this['infowindow'].open(map, this);
+            });
             {% endfor %}
         } else {
           // Browser doesn't support Geolocation
