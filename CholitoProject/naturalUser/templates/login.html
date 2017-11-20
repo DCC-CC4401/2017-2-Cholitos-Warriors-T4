@@ -1,0 +1,64 @@
+{% extends "User/user-standard.html" %}
+{% block extra %}login-page{% endblock %}
+
+{% block title %}Ingresar{% endblock %}
+
+{% block content %}
+
+    <div class="login-box">
+        <div class="login-logo">
+            <strong>Cholito</strong>
+        </div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">
+                Ingresa tu email y contraseña para ingresar.
+            </p>
+
+            <form action="{% url 'auth' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group has-feedback">
+                    <input name="email" class="form-control" placeholder="Email" type="email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input name="password" class="form-control" placeholder="Contraseña" type="password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col-xs-6">
+                        <button type="submit" class="pull-right btn btn-primary btn-block btn-flat">Ingresar</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <br>
+
+            <div>
+                <a href="{% url 'signup' %}" class="btn btn-success btn-block btn-flat">Regístrate</a>
+            </div>
+
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
+{% endblock %}

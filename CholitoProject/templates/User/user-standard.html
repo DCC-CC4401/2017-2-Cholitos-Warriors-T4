@@ -1,0 +1,134 @@
+{% extends "main-user.html" %}
+
+{% block sidebar %}
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            {% if user.is_authenticated %}
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="{{ c_user.avatar.url }}" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <br>
+                        <p>{{ user.first_name }} {{ user.last_name }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Sidebar Menu -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="treeview active menu-open">
+                    <a href="#">
+                        <i class="fa fa-search"></i>
+                        <span>Adoptar</span>
+                        <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                    </a>
+                    <ul class="treeview-menu c-filtro-adoptar">
+                        <form action="{% url 'user-index' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="filter_type" id="filter_type" value="1"> Tipo
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="animal_type" name="animal_type">
+                                {% for animal in animal_types %}
+                                    <option value="{{ animal }}">{{ animal }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="filter_age" id="filter_age" value="1"> Edad
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="age_range" name="age_range">
+                                <option value="0">0-1</option>
+                                <option value="1">1-4</option>
+                                <option value="2">4-10</option>
+                                <option value="3">10+</option>
+                            </select>
+                        </div>
+                        <input type="submit" value="Filtrar" style="color: black;">
+                        </form>
+                    </ul>
+                </li>
+                <li>
+                    <a href={% url 'complaint-form' %}>
+                        <i class="fa fa-bullhorn"></i>
+                        <span>Denunciar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-star"></i>
+                        <span>ONG</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'see-animal' 1 %}">
+                        <i class="fa fa-paw"></i>
+                        <span>Animales en Adopción</span>
+                    </a>
+                </li>
+            </ul>
+            <!-- /.sidebar-menu -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+{% endblock %}
+
+
+{% block control %}
+
+    <div class="control-sidebar-bg"></div>
+{% endblock %}
+
+{% block modal %}
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Perfil</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="/user/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="user_first_name">Nombre</label>
+                            <input class="form-control" id="user_first_name"
+                                   value="{{ user.first_name }}" name="f_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="user_last_name">Apellido</label>
+                            <input class="form-control" id="user_last_name"
+                                   value="{{ user.last_name }}" name="l_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">Imagen de perfil</label>
+                            <br>
+                            <img src="{{ c_user.avatar.url }}" class="user-image" alt="User Image" width="150">
+                            <br><br>
+                            <input type="file" id="exampleInputFile" name="avatar">
+                        </div>
+
+                        <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./modal -->
+{% endblock %}

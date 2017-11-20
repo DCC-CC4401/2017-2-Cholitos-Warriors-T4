@@ -1,0 +1,69 @@
+{% extends "Municipality/municipality-standard.html" %}
+{% block title %}Denuncias{% endblock %}
+
+{% block content-header %}Denuncias{% endblock %}
+
+{% block content %}
+    <div id="chart_div"></div>
+    <br>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Tipo Denuncia</th>
+            <th>Animal</th>
+            <th>Dirección</th>
+            <th>Herido</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for complaint in complaints %}
+            <tr class="clickable-row" data-href="{% url 'see-complaint' complaint.pk %}">
+                <th>{{ complaint.get_case_display }}</th>
+                <th>{{ complaint.animal_type }}</th>
+                <th>{{ complaint.directions }}</th>
+                <th>{{ complaint.get_wounded_display }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".clickable-row").click(function () {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawStacked);
+
+function drawStacked() {
+      var data = google.visualization.arrayToDataTable([
+        ['Tipo de Denuncia', 'Cantidad de Denucias'],
+        {% for key, value in stats.items %} 
+            ["{{key}}", {{value}}],
+        {% endfor %}
+      ]);
+
+      var options = {
+        title: 'Estadisticas de denuncias emitidas',
+        chartArea: {width: '50%'},
+        isStacked: true,
+        hAxis: {
+          title: 'Cantidad de denuncias',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'Estados de Denuncia'
+        }
+      };
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+    </script>
+
+{% endblock %}
