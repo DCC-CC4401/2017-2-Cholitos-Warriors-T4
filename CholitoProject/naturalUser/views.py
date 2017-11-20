@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from CholitoProject.userManager import get_user_index
 from complaint.models import AnimalType
 from naturalUser.forms import SignUpForm, AvatarForm
-from naturalUser.models import NaturalUser
+from naturalUser.models import NaturalUser, FavoriteONGs
 from ong.models import ONG
 
 class IndexView(TemplateView):
@@ -23,6 +23,9 @@ class IndexView(TemplateView):
         self.context['ongs'] = ongs
         if c_user is None:
             return render(request, 'index.html', context=self.context)
+        favorites = FavoriteONGs.objects.filter(user=c_user)
+        self.context['favorites'] = favorites
+        self.context['ongs'] = ongs
         return c_user.get_index(request, context=self.context)
 
 

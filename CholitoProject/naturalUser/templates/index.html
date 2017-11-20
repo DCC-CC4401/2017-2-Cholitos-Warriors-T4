@@ -55,6 +55,22 @@
                  this['infowindow'].open(map, this);
             });
             {% endfor %}
+            var fav_icon = iconBase + 'info.png'
+            {% for favorite in favorites %}
+                var locfav = new google.maps.LatLng({{ favorite.ongs.lat }}, {{ favorite.ongs.lng }});
+                var markfav = new google.maps.Marker({
+                    position: locfav,
+                    map: map,
+                    icon: fav_icon
+                });
+                markfav['infowindow'] = new google.maps.InfoWindow({
+                    content: "Favorito"
+                });
+                google.maps.event.addListener(markfav, 'click', function() {
+                    //window.location.href = this.url;
+                    this['infowindow'].open(map, this);
+                });
+            {% endfor %}
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
@@ -101,7 +117,7 @@
                 var loc = new google.maps.LatLng({{ ong.lat }}, {{ ong.lng }});
                 var mark = new google.maps.Marker({
                     position: loc,
-                    map: map
+                    map: map,
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
                     content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
@@ -111,6 +127,7 @@
                  this['infowindow'].open(map, this);
             });
             {% endfor %}
+
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
