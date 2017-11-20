@@ -16,6 +16,7 @@ class ONGforNaturalUser(View):
     def get(self, request, pk, **kwargs):
         user = get_user_index(request.user)
         self.context['user'] = request.user
+        self.context['c_user'] = user
         ong = get_object_or_404(ONG, pk=pk)
         self.context['ong'] = ong
         animals = Animal.objects.filter(ong = ong.id)
