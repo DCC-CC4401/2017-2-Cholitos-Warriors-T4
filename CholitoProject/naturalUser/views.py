@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 
@@ -10,6 +10,7 @@ from complaint.models import AnimalType
 from naturalUser.forms import SignUpForm, AvatarForm
 from naturalUser.models import NaturalUser
 from ong.models import ONG
+from animals.models import *
 
 class IndexView(TemplateView):
     context = {}
@@ -18,7 +19,7 @@ class IndexView(TemplateView):
         c_user = get_user_index(request.user)
         self.context['c_user'] = c_user
         animals = AnimalType.objects.all()
-        self.context['animals'] = animals
+        self.context['animal_types'] = animals
         ongs = ONG.objects.all()
         self.context['ongs'] = ongs
         if c_user is None:
@@ -30,7 +31,7 @@ class LogInView(TemplateView):
     template_name = 'login.html'
     animals = AnimalType.objects.all()
     ongs = ONG.objects.all()
-    context = {'animals': animals, 'ongs': ongs}
+    context = {'animal_types': animals, 'ongs': ongs}
 
     def get(self, request, **kwargs):
         return render(request, self.template_name, context=self.context)
@@ -41,7 +42,7 @@ class SignUpView(View):
     avatar_form = AvatarForm(prefix='avatar')
     animals = AnimalType.objects.all()
     context = {'user_form': user_form,
-               'avatar_form': avatar_form, 'animals': animals}
+               'avatar_form': avatar_form, 'animal_types': animals}
     template_name = 'sign_up.html'
 
     def get(self, request, **kwargs):
@@ -83,16 +84,36 @@ class OngInViewTemplate(PermissionRequiredMixin, LoginRequiredMixin, TemplateVie
     template_name = 'usuario-in-ong.html'
     context = {}
 
-    def get(self, request, **kwargs):
-        c_user = get_user_index(request.user)
-        self.context['c_user'] = c_user
+    def get(self, request, pk, **kwargs):
         animals = AnimalType.objects.all()
-        self.context['animals'] = animals
+        self.context['animal_types'] = animals
+        user = get_user_index(request.user)
+        self.context['user'] = request.user
+        self.context['c_user'] = user
+        ong = get_object_or_404(ONG, pk=pk)
+        self.context['ong'] = ong
+        animals = Animal.objects.filter(ong=ong.id)
+        animal_images = []
+        for animal in animals:
+            animal_images.append(AnimalImage.objects.filter(animal=animal.id)[0])
+        self.context['animals'] = animal_images
+
         return render(request, self.template_name, context=self.context)
 
 
 class OngOutViewTemplate(TemplateView):
     template_name = 'usuario-out-ong.html'
+    context = {}
 
-    def get(self, request, **kwargs):
-        return render(request, self.template_name)
+    def get(self, request, pk, **kwargs):
+        animals = AnimalType.objects.all()
+        self.context['animal_types'] = animals
+        user = get_user_index(request.user)
+        ong = get_object_or_404(ONG, pk=pk)
+        self.context['ong'] = ong
+        animals = Animal.objects.filter(ong=ong.id)
+        animal_images = []
+        for animal in animals:
+            animal_images.append(AnimalImage.objects.filter(animal=animal.id)[0])
+        self.context['animals'] = animal_images
+        return render(request, self.template_name, context=self.context)

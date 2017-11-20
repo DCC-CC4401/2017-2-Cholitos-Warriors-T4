@@ -10,8 +10,8 @@ urlpatterns = [
     url(r'^$', IndexView.as_view(), name='user-index'),
     # for now
     url(r'^user/$', UserDetail.as_view(), name='user-update'),
-    url(r'^user-ong-in/$', OngInViewTemplate.as_view(), name='user-ong-in'),
-    url(r'^user-ong-out/$', OngOutViewTemplate.as_view(), name='user-ong-out'),
+    url(r'^user-ong-in/(?P<pk>\d+)/$', OngInViewTemplate.as_view(), name='user-ong-in'),
+    url(r'^user-ong-out/(?P<pk>\d+)/$', OngOutViewTemplate.as_view(), name='user-ong-out'),
 ]
 
 if settings.DEBUG:
