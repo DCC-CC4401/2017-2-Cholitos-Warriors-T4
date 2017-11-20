@@ -48,12 +48,28 @@
                     map: map
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
-                    content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'user-ong-in' pk=ong.pk %}> Visitar Perfil!</a>"
+                    content: "<h4>{{ ong.name }}</h4> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(mark, 'click', function() {
                 //window.location.href = this.url;
                  this['infowindow'].open(map, this);
             });
+            {% endfor %}
+            var fav_icon = iconBase + 'info.png'
+            {% for favorite in favorites %}
+                var locfav = new google.maps.LatLng({{ favorite.ongs.lat }}, {{ favorite.ongs.lng }});
+                var markfav = new google.maps.Marker({
+                    position: locfav,
+                    map: map,
+                    label:'★'
+                });
+                markfav['infowindow'] = new google.maps.InfoWindow({
+                    content: "<h4>{{ favorite.ongs.name }}</h4>{{ favorite.ongs.directions }} <br> <a href={% url 'ong:ong-logged' pk=favorite.ongs.pk %}> Visitar Perfil!</a>"
+                });
+                google.maps.event.addListener(markfav, 'click', function() {
+                    //window.location.href = this.url;
+                    this['infowindow'].open(map, this);
+                });
             {% endfor %}
         } else {
           // Browser doesn't support Geolocation
@@ -101,16 +117,17 @@
                 var loc = new google.maps.LatLng({{ ong.lat }}, {{ ong.lng }});
                 var mark = new google.maps.Marker({
                     position: loc,
-                    map: map
+                    map: map,
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
-                    content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'user-ong-out' pk=ong.pk %}> Visitar Perfil!</a>"
+                    content: "<h4>{{ ong.name }}</h4> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(mark, 'click', function() {
                 //window.location.href = this.url;
                  this['infowindow'].open(map, this);
             });
             {% endfor %}
+
         } else {
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
