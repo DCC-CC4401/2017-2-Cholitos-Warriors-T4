@@ -6,17 +6,21 @@
 {% block content-header %}
     <div class="row">
         <div class="c-fundacion-title">
-            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion EDRA Image"
+            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion {{ ong.name }} Image"
                  width="100">
         </div>
         <div class="col-xs-6">
             <br>
-            Fundación EDRA
-            &nbsp;<i class="fa fa-star-o c-star--empty"></i>
+            Fundación {{ ong.name }}
+            {% if ong_is_fav %}
+            <a class="fa fa-star-o c-star"></a>
+            {% else %}
+            <a class="fa fa-star-o c-star--empty"></a>
+            {% endif %}
             <br>
             <small>
                 <i class="fa fa-star c-star"></i>
-                182
+                {{ ong_count }}
             </small>
         </div>
     </div>
@@ -25,19 +29,25 @@
 {% block content %}
 
     <div class="row">
+    {% for animal in animals %}
     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="info-box">
-                            <span class="info-box-icon"
-                                  style="background:url({% static 'internal/img/perro-100x100.jpg' %});">
-                            </span>
-            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Candy
-                                </span>
-                <span class="info-box-text">Perro | Hembra</span>
+        <div class="info-box" style="text-align:center;">
+            <div class="myDiv" style="display:inline-block;">
+                <img src={{ animal.image.url }} width="90" height="90">
+            </span>
+            </div>
+            <div class="info-box-content" style="display:inline-block;">
+                <span class="info-box-number">
+                    {{ animal.animal.name }}
+                </span>
+                {% if animal.animal.gender == 1 %}
+                <span class="info-box-text">{{ animal.animal.animal_type.name }} | Macho</span>
+                {% else %}
+                <span class="info-box-text">{{ animal.animal.animal_type.name }} | Hembra</span>
+                {% endif %}
                 <div class="c-info-box__btns">
                     <div class="c-info-box__btns__one">
-                        <a href="#" type="button" class="btn btn-xs btn-info">
+                        <a href="{% url 'see-animal' animal.animal.id %}" type="button" class="btn btn-xs btn-info">
                             <i class="fa fa-eye"></i>
                             &nbsp; Ver
                         </a>
@@ -46,27 +56,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="info-box">
-                            <span class="info-box-icon"
-                                  style="background:url({% static 'internal/img/gato-100x100.jpg' %}) right bottom;">
-                            </span>
-            <div class="info-box-content">
-                                <span class="info-box-number">
-                                    Tomás
-                                </span>
-                <span class="info-box-text">Gato | Macho</span>
-                <div class="c-info-box__btns">
-                    <div class="c-info-box__btns__one">
-                        <a href="#" type="button" class="btn btn-xs btn-info">
-                            <i class="fa fa-eye"></i>
-                            &nbsp; Ver
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
     <!-- /.row -->
     </div>
 
