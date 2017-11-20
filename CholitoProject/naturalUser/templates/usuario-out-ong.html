@@ -6,17 +6,21 @@
 {% block content-header %}
     <div class="row">
         <div class="c-fundacion-title">
-            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion EDRA Image"
+            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion {{ ong.name }} Image"
                  width="100">
         </div>
         <div class="col-xs-6">
             <br>
             Fundación {{ ong.name }}
-            &nbsp;<i class="fa fa-star-o c-star--empty"></i>
+            {% if ong_is_fav %}
+            <a class="fa fa-star-o c-star"></a>
+            {% else %}
+            <a class="fa fa-star-o c-star--empty"></a>
+            {% endif %}
             <br>
             <small>
                 <i class="fa fa-star c-star"></i>
-                182
+                {{ ong_count }}
             </small>
         </div>
     </div>

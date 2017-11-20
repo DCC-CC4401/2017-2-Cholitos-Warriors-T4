@@ -6,18 +6,25 @@
 {% block content-header %}
     <div class="row">
         <div class="c-fundacion-title">
-            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion EDRA Image"
+            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion {{ ong.name }} Image"
                  width="100">
         </div>
         <div class="col-xs-6">
-            <br>
-            Fundación {{ ong.name }}
-            &nbsp;<i class="fa fa-star-o c-star--empty"></i>
-            <br>
-            <small>
-                <i class="fa fa-star c-star"></i>
-                182
-            </small>
+            <form method="POST" action="{% url 'user-ong-in' pk=ong.pk %}">
+                {% csrf_token %}
+                <br>
+                Fundación {{ ong.name }}
+                {% if ong_is_fav %}
+                <button class="fa fa-star-o c-star"></button>
+                {% else %}
+                <button class="fa fa-star-o c-star--empty"></button>
+                {% endif %}
+                <br>
+                <small>
+                    <i class="fa fa-star c-star"></i>
+                    {{ ong_count }}
+                </small>
+            </form>
         </div>
     </div>
 {% endblock %}

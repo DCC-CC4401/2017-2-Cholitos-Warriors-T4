@@ -88,12 +88,25 @@ class OngInViewTemplate(PermissionRequiredMixin, LoginRequiredMixin, TemplateVie
     context = {}
 
     def get(self, request, pk, **kwargs):
+        natural = NaturalUser.objects.get(user = request.user)
+        ong = get_object_or_404(ONG, pk=pk)
+
+        try:
+            FavoriteONGs.objects.get(user=natural.id, ongs=pk)
+            self.context['ong_is_fav'] = True
+        except FavoriteONGs.DoesNotExist:
+            self.context['ong_is_fav'] = False
+
+        try:
+            self.context['ong_count'] = FavoriteONGs.objects.filter(ongs=pk).count()
+        except FavoriteONGs.DoesNotExist:
+            self.context['ong_count'] = 0
+
         animals = AnimalType.objects.all()
         self.context['animal_types'] = animals
         user = get_user_index(request.user)
         self.context['user'] = request.user
         self.context['c_user'] = user
-        ong = get_object_or_404(ONG, pk=pk)
         self.context['ong'] = ong
         animals = Animal.objects.filter(ong=ong.id)
         animal_images = []
@@ -103,16 +116,51 @@ class OngInViewTemplate(PermissionRequiredMixin, LoginRequiredMixin, TemplateVie
 
         return render(request, self.template_name, context=self.context)
 
+    def post(self, request, pk, **kwargs):
+        natural = NaturalUser.objects.get(user = request.user)
+        ong = get_object_or_404(ONG, pk=pk)
+
+        try:
+            FavoriteONGs.objects.get(user=natural.id, ongs=ong)
+            self.context['ong_is_fav'] = False
+            FavoriteONGs.objects.get(user=natural, ongs=pk).delete()
+        except FavoriteONGs.DoesNotExist:
+            self.context['ong_is_fav'] = True
+            FavoriteONGs.objects.create(user=natural, ongs=ong).save()
+
+        try:
+            self.context['ong_count'] = FavoriteONGs.objects.filter(ongs=pk).count()
+        except FavoriteONGs.DoesNotExist:
+            self.context['ong_count'] = 0
+
+        animals = AnimalType.objects.all()
+        self.context['animal_types'] = animals
+        user = get_user_index(request.user)
+        self.context['user'] = request.user
+        self.context['c_user'] = user
+        self.context['ong'] = ong
+        animals = Animal.objects.filter(ong=ong.id)
+        animal_images = []
+        for animal in animals:
+            animal_images.append(AnimalImage.objects.filter(animal=animal.id)[0])
+        self.context['animals'] = animal_images
+
+        return render(request, self.template_name, context=self.context)
 
 class OngOutViewTemplate(TemplateView):
     template_name = 'usuario-out-ong.html'
     context = {}
 
     def get(self, request, pk, **kwargs):
+        ong = get_object_or_404(ONG, pk=pk)
+
+        try:
+            self.context['ong_count'] = FavoriteONGs.objects.filter(ongs=pk).count()
+        except FavoriteONGs.DoesNotExist:
+            self.context['ong_count'] = 0
+
         animals = AnimalType.objects.all()
         self.context['animal_types'] = animals
-        user = get_user_index(request.user)
-        ong = get_object_or_404(ONG, pk=pk)
         self.context['ong'] = ong
         animals = Animal.objects.filter(ong=ong.id)
         animal_images = []
