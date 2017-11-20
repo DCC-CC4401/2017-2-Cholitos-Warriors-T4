@@ -48,7 +48,7 @@
                     map: map
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
-                    content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
+                    content: "<h4>{{ ong.name }}</h4> <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(mark, 'click', function() {
                 //window.location.href = this.url;
@@ -64,7 +64,7 @@
                     label:'F'
                 });
                 markfav['infowindow'] = new google.maps.InfoWindow({
-                    content: "Favorito"
+                    content: "<h4>{{ favorite.ongs.name }}</h4>{{ favorite.ongs.directions }} <br> <a href={% url 'ong:ong-logged' pk=favorite.ongs.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(markfav, 'click', function() {
                     //window.location.href = this.url;
@@ -120,7 +120,7 @@
                     map: map,
                 });
                 mark['infowindow'] = new google.maps.InfoWindow({
-                    content: "{{ ong.name }} <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
+                    content: "<h4>{{ ong.name }}</h4> <br> {{ ong.directions }} <br> <a href={% url 'ong:ong-logged' pk=ong.pk %}> Visitar Perfil!</a>"
                 });
                 google.maps.event.addListener(mark, 'click', function() {
                 //window.location.href = this.url;
