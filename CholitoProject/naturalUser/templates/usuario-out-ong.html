@@ -6,7 +6,7 @@
 {% block content-header %}
     <div class="row">
         <div class="c-fundacion-title">
-            <img src="{% static 'internal/img/ong-edra.png' %}" class="user-image" alt="Fundacion {{ ong.name }} Image"
+            <img src="{{ ong.avatar.url }}" class="user-image" alt="Fundacion {{ ong.name }} Image"
                  width="100">
         </div>
         <div class="col-xs-6">

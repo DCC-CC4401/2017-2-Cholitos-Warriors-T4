@@ -28,30 +28,35 @@
                             </span>
                     </a>
                     <ul class="treeview-menu c-filtro-adoptar">
+                        <form action="{% url 'user-index' %}" method="POST">
+                        {% csrf_token %}
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> Tipo
+                                <input type="checkbox" name="filter_type" id="filter_type" value="1"> Tipo
                             </label>
                         </div>
                         <div class="form-group">
-                            <select class="form-control">
+                            <select class="form-control" id="animal_type" name="animal_type">
                                 {% for animal in animal_types %}
-                                    <option>{{ animal }}</option>
+                                    <option value="{{ animal }}">{{ animal }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> Edad
+                                <input type="checkbox" name="filter_age" id="filter_age" value="1"> Edad
                             </label>
                         </div>
                         <div class="form-group">
-                            <select class="form-control">
-                                <option>0-1</option>
-                                <option>2-4</option>
-                                <option>4-10</option>
+                            <select class="form-control" id="age_range" name="age_range">
+                                <option value="0">0-1</option>
+                                <option value="1">1-4</option>
+                                <option value="2">4-10</option>
+                                <option value="3">10+</option>
                             </select>
                         </div>
+                        <input type="submit" value="Filtrar" style="color: black;">
+                        </form>
                     </ul>
                 </li>
                 <li>

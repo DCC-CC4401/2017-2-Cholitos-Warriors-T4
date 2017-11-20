@@ -10,7 +10,7 @@ from naturalUser.models import NaturalUser
 
 class AnimalRenderView(View):
     template_name = 'view_animal.html'
-    context = {'animals': AnimalType.objects.all()}
+    context = {'animal_types': AnimalType.objects.all()}
 
     def get(self, request, pk, **kwargs):
         c_user = get_user_index(request.user)
