@@ -18,6 +18,7 @@ class ComplaintView(View):
     def get(self, request, **kwargs):
         user = get_user_index(request.user)
         self.context['c_user'] = user
+        self.context['animal_types'] = self.animals
         return render(request, self.template_name, context=self.context)
 
 
@@ -50,6 +51,8 @@ class ComplaintRenderView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
         images = ComplaintImage.objects.filter(complaint=complaint)
         self.context['images'] = images
+        animals = AnimalType.objects.all()
+        self.context['animal_types'] = animals
 
         return render(request, self.template_name, context=self.context)
 
@@ -64,6 +67,8 @@ class ComplaintActState(PermissionRequiredMixin, LoginRequiredMixin, View):
         complaint.status = request.POST['status']
         complaint.save()
 
+        animals = AnimalType.objects.all()
+        self.context['animal_types'] = animals
         self.context['complaint'] = complaint
 
         images = ComplaintImage.objects.filter(complaint=complaint)

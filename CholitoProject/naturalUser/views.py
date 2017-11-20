@@ -29,6 +29,61 @@ class IndexView(TemplateView):
         self.context['ongs'] = ongs
         return c_user.get_index(request, context=self.context)
 
+    def post(self, request, **kwargs):
+        ongs_raw = ONG.objects.all()
+        filter_by_type = request.POST.get('filter_type')
+        selected_type = request.POST.get('animal_type')
+        filter_by_age = request.POST.get('filter_age')
+        selected_age_range = request.POST.get('age_range')
+        ongs_temp = []
+
+        if filter_by_type == "1":
+            for ong in ongs_raw:
+                animals = Animal.objects.filter(ong = ong)
+                for animal in animals:
+                    if animal.animal_type.name == selected_type:
+                        ongs_temp.append(ong)
+                        break
+        else:
+            for ong in ongs_raw:
+                ongs_temp.append(ong)
+
+        ongs = []
+        max = 0
+        min = 0
+        if filter_by_age == "1":
+            if selected_age_range == "0":
+                max = 1
+            elif selected_age_range == "1":
+                min = 2
+                max = 4
+            elif selected_age_range == "2":
+                min = 4
+                max = 10
+            elif selected_age_range == "3":
+                min = 10
+                max = 10000
+            for ong in ongs_temp:
+                animals = Animal.objects.filter(ong=ong)
+                for animal in animals:
+                    if animal.estimated_age >= min and animal.estimated_age <= max:
+                        ongs.append(ong)
+                        break
+        else:
+            for ong in ongs_temp:
+                ongs.append(ong)
+
+        c_user = get_user_index(request.user)
+        animals = AnimalType.objects.all()
+        self.context['c_user'] = c_user
+        self.context['animal_types'] = animals
+        self.context['ongs'] = ongs
+        if c_user is None:
+            return render(request, 'index.html', context=self.context)
+        favorites = FavoriteONGs.objects.filter(user=c_user)
+        self.context['favorites'] = favorites
+        self.context['ongs'] = ongs
+        return c_user.get_index(request, context=self.context)
 
 class LogInView(TemplateView):
     template_name = 'login.html'
