@@ -21,5 +21,5 @@ class NaturalUser(models.Model):
         return render(request, 'index.html', context=context)
 
 class FavoriteONGs(models.Model):
-    ongs = models.ForeignKey(ONG)
+    ongs = models.ForeignKey(ONG, related_name='favorites')
     user = models.ForeignKey(NaturalUser)
