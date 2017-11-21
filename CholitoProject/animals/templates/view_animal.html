@@ -1,0 +1,90 @@
+{% extends "User/user-standard.html" %}
+
+{% block title %}{{ selected_animal.name }}{% endblock %}
+
+{% block content-header %}{{ selected_animal.name }}{% endblock %}
+
+{% block content %}
+    <!-- slider -->
+    <div class="row">
+        <div class="col-md-9" id="slider">
+            <!-- Top part of the slider -->
+            <div class="row">
+                <div class="col-md-3" id="carousel-bounding-box">
+                    <div id="myCarousel" class="carousel slide">
+                        <!-- Carousel items -->
+                        <div class="carousel-inner">
+
+                            {% for image in images %}
+
+                                <div class="item"
+                                        {% if forloop.counter0 == 0 %}
+                                     id="slide0"
+                                        {% endif %}
+                                     data-slide-number="{{ forloop.counter0 }}">
+                                    <img class="img-rounded img-responsive" src="{{ image.image.url }}">
+                                </div>
+
+                            {% endfor %}
+
+                        </div><!--/carousel-inner-->
+                    </div><!--/carousel-->
+                    <ul class="carousel-controls-mini list-inline text-center">
+                        <li><a href="#myCarousel" data-slide="prev">‹</a></li>
+                        <li><a href="#myCarousel" data-slide="next">›</a></li>
+                    </ul><!--/carousel-controls-->
+                </div><!--/col-->
+                <div class="col-md-4" id="carousel-text"></div>
+
+            </div><!--/row-->
+        </div><!--/col-->
+    </div><!--/row slider-->
+
+    <script>
+        $(document).ready(function () {
+            jQuery("#slide0").addClass("active");
+        });
+    </script>
+
+
+    <p>Genero: {{ selected_animal.get_gender_display }}</p>
+    <p>Tipo de animal: {{ selected_animal.animal_type }}</p>
+    <p>Edad estimada: {{ selected_animal.estimated_age }} años</p>
+    <p>Dias en adopcion: {{ selected_animal.days_in_adoption }}</p>
+    <p>Color: {{ selected_animal.color }}</p>
+    <p>Descripcion: {{ selected_animal.description }}</p>
+
+    <br><br>
+    {% if user.is_authenticated %}
+        {% if c_user in adopters %}
+            <p>Has seleccionado adoptar este animal :)</p>
+        {% else %}
+            <button id="adopt" data-id="{{ selected_animal.pk }}" class="btn btn-mini btn-primary"
+                    type="button">
+                ¡Adoptame!
+            </button>
+        {% endif %}
+    {% endif %}
+
+    <p>Los siguientes usuarios han seleccionado adoptar:</p>
+    <div id="the_adopters">
+        {% if adopters %}
+            {% for user in adopters %}
+                <p>{{ user.user.first_name }} {{ user.user.last_name }}</p>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+    <script>
+        $('#adopt').click(function () {
+            var animal_id = $(this).attr("data-id");
+            $.get('{% url 'adopt' %}', {id: animal_id}, function (data) {
+                $('#the_adopters').html(data);
+                $('#adopt').hide();
+                alert("Hemos enviado tu información a la ONG correspondiente!");
+            });
+        });
+    </script>
+
+{% endblock %}

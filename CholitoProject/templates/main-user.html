@@ -1,0 +1,28 @@
+{% extends "main.html" %}
+{% block in-wrapper %}
+
+    {% block sidebar %}
+    {% endblock %}
+
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                {% block content-header %}{% endblock %}
+            </h1>
+        </section>
+        <section class="content container-fluid">
+            {% block content %}
+            {% endblock %}
+        </section>
+    </div>
+{% endblock %}
+
+{% block detail %}
+
+    {% block control %}
+    {% endblock %}
+
+    {% block modal %}
+    {% endblock %}
+
+{% endblock %}
