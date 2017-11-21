@@ -27,7 +27,13 @@ class IndexView(TemplateView):
             return render(request, 'index.html', context=self.context)
         elif request.user.has_perm('municipality.municipality_user_access'):
             return c_user.get_index(request, context=self.context)
-        favorites = FavoriteONGs.objects.filter(user=c_user)
+        favorites_temp = FavoriteONGs.objects.filter(user=c_user)
+        favorites = []
+        for fav in favorites_temp:
+            for ong in ongs:
+                if fav.ongs.id == ong.id:
+                    favorites.append(fav)
+                    break
         self.context['favorites'] = favorites
         return c_user.get_index(request, context=self.context)
 
@@ -82,7 +88,13 @@ class IndexView(TemplateView):
         self.context['ongs'] = ongs
         if c_user is None:
             return render(request, 'index.html', context=self.context)
-        favorites = FavoriteONGs.objects.filter(user=c_user)
+        favorites_temp = FavoriteONGs.objects.filter(user=c_user)
+        favorites = []
+        for fav in favorites_temp:
+            for ong in ongs:
+                if fav.ongs.id == ong.id:
+                    favorites.append(fav)
+                    break
         self.context['favorites'] = favorites
         return c_user.get_index(request, context=self.context)
 
