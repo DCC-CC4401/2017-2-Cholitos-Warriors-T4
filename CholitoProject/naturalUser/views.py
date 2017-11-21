@@ -11,6 +11,7 @@ from naturalUser.forms import SignUpForm, AvatarForm
 from naturalUser.models import NaturalUser, FavoriteONGs
 from ong.models import ONG
 from animals.models import *
+from municipality.models import MunicipalityUser
 
 class IndexView(TemplateView):
     context = {}
@@ -24,9 +25,10 @@ class IndexView(TemplateView):
         self.context['ongs'] = ongs
         if c_user is None:
             return render(request, 'index.html', context=self.context)
+        elif request.user.has_perm('municipality.municipality_user_access'):
+            return c_user.get_index(request, context=self.context)
         favorites = FavoriteONGs.objects.filter(user=c_user)
         self.context['favorites'] = favorites
-        self.context['ongs'] = ongs
         return c_user.get_index(request, context=self.context)
 
     def post(self, request, **kwargs):
@@ -82,7 +84,6 @@ class IndexView(TemplateView):
             return render(request, 'index.html', context=self.context)
         favorites = FavoriteONGs.objects.filter(user=c_user)
         self.context['favorites'] = favorites
-        self.context['ongs'] = ongs
         return c_user.get_index(request, context=self.context)
 
 class LogInView(TemplateView):
